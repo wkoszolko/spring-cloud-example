@@ -3,7 +3,7 @@ spring-cloud-example
 Example of small distributed system, which is built with Netflix OSS and Spring Cloud.
 
 This example covers:
-* service discover Eureka
+* service discovery Eureka
 * load balancing using Ribbon
 * circuit breaker Hystrix
 * reactive programming with RxJava 
