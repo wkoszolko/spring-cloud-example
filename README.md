@@ -20,7 +20,7 @@ Provide catalog of books with basic information (title and discription).
 This service provides reviews of books.
 
 ##### book-gateway
-This api gateway which integrate microservices and expose book details via a REST API.
+This is api gateway which integrate microservices and expose book details via a REST API.
 
 In the feature
 ----
