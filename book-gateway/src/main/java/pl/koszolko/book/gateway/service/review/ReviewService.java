@@ -1,7 +1,6 @@
 package pl.koszolko.book.gateway.service.review;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.command.ObservableResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -20,14 +19,13 @@ public class ReviewService {
 
     @HystrixCommand(fallbackMethod = "stubReviews")
     public Observable<List<Review>> getReviewsBy(long bookId) {
-        return new ObservableResult<List<Review>>() {
-            @Override
-            public List<Review> invoke() {
-                ParameterizedTypeReference<List<Review>> responseType = new ParameterizedTypeReference<List<Review>>() {
-                };
-                return restTemplate.exchange("http://review-service/reviewsFor/{bookId}", HttpMethod.GET, null, responseType, bookId).getBody();
-            }
+        return Observable.just(invokeReviewService(bookId));
+    }
+
+    private List<Review> invokeReviewService(long bookId) {
+        ParameterizedTypeReference<List<Review>> responseType = new ParameterizedTypeReference<List<Review>>() {
         };
+        return restTemplate.exchange("http://review-service/reviewsFor/{bookId}", HttpMethod.GET, null, responseType, bookId).getBody();
     }
 
     private List<Review> stubReviews(long bookId) {
