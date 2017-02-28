@@ -1,0 +1,44 @@
+version: "2"
+services:
+    eureka:
+        image: wkoszolko/eureka
+        ports:
+            - "8761:8761"
+
+    admin_dashboard:
+        image: wkoszolko/admin-server
+        ports:
+            - "8083:8083"
+        links:
+            - eureka
+        environment:
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+    book_review:
+        image: wkoszolko/book-review
+        ports:
+            - "8082:8082"
+        links:
+            - eureka
+        environment:
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+    book_catalog:
+        image: wkoszolko/catalog
+        ports:
+            - "8081:8081"
+        links:
+            - eureka
+        environment:
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+    api_gateway:
+        image: wkoszolko/gateway
+        ports:
+            - "8088:8088"
+        links:
+            - book_review
+            - book_catalog
+            - eureka
+        environment:
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
